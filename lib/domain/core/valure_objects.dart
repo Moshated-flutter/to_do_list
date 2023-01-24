@@ -6,6 +6,7 @@ import 'package:to_do_list/domain/core/failure.dart';
 abstract class ValueObjects<T> {
   const ValueObjects();
   Either<ValueFailure<T>, T> get value;
+  bool isValid() => value.isRight();
   @override
   String toString() => 'Value($value)';
 
