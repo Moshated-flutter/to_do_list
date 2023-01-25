@@ -1,15 +1,13 @@
-import 'dart:math';
-
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:injectable/injectable.dart';
 import 'package:to_do_list/domain/auth/auth_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:to_do_list/domain/auth/i_auth_facade.dart';
 import 'package:to_do_list/domain/auth/value_objects.dart';
-import 'package:to_do_list/domain/core/errors.dart';
 
+@LazySingleton(as: IAuthFacade)
 class FirebaseIAuthFacade implements IAuthFacade {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
@@ -34,9 +32,9 @@ class FirebaseIAuthFacade implements IAuthFacade {
       return right(unit);
     } on PlatformException catch (error) {
       if (error.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
-        return left(AuthFailure.emailAlreadyInUse());
+        return left(const AuthFailure.emailAlreadyInUse());
       } else {
-        return left(AuthFailure.serverError());
+        return left(const AuthFailure.serverError());
       }
     }
   }
@@ -57,9 +55,9 @@ class FirebaseIAuthFacade implements IAuthFacade {
     } on PlatformException catch (error) {
       if (error.code == 'ERROR_WRONG_PASSWORD' ||
           error.code == 'ERROR_USER_NOT_FOUND') {
-        return left(AuthFailure.invalidEmailAndPasswordCombination());
+        return left(const AuthFailure.invalidEmailAndPasswordCombination());
       } else {
-        return left(AuthFailure.serverError());
+        return left(const AuthFailure.serverError());
       }
     }
   }
@@ -69,7 +67,7 @@ class FirebaseIAuthFacade implements IAuthFacade {
     try {
       final googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
-        return left(AuthFailure.cancelledByUser());
+        return left(const AuthFailure.cancelledByUser());
       }
       final googleAuthentication = await googleUser.authentication;
       final authCredential = GoogleAuthProvider.credential(
@@ -79,7 +77,7 @@ class FirebaseIAuthFacade implements IAuthFacade {
       return _firebaseAuth
           .signInWithCredential(authCredential)
           .then((value) => right(unit));
-    } on PlatformException catch (error) {
+    } on PlatformException catch (_) {
       return left(const AuthFailure.serverError());
     }
   }

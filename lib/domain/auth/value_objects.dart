@@ -4,6 +4,7 @@ import 'package:to_do_list/domain/core/value_validators.dart';
 import 'package:to_do_list/domain/core/valure_objects.dart';
 
 class EmailAddress extends ValueObjects<String> {
+  @override
   final Either<ValueFailure<String>, String> value;
   factory EmailAddress(String input) {
     assert(input != null);
@@ -16,6 +17,7 @@ class EmailAddress extends ValueObjects<String> {
 }
 
 class Password extends ValueObjects<String> {
+  @override
   final Either<ValueFailure<String>, String> value;
   factory Password(String input) {
     assert(input != null);

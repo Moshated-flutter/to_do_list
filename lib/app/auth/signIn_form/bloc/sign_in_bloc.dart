@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
 import 'package:to_do_list/domain/auth/auth_failure.dart';
 import 'package:to_do_list/domain/auth/i_auth_facade.dart';
 import 'package:to_do_list/domain/auth/value_objects.dart';
@@ -10,14 +11,13 @@ part 'sign_in_event.dart';
 part 'sign_in_state.dart';
 part 'sign_in_bloc.freezed.dart';
 
+@injectable
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   SignInBloc(super.initialState, this._authFacade);
   final IAuthFacade _authFacade;
 
   SignInState get initialState => SignInState.initial();
 
-  @override
-  // TODO: implement stream
   Stream<SignInState> mapEventsToState(
     SignInEvent event,
   ) async* {

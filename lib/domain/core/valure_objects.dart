@@ -19,9 +19,9 @@ abstract class ValueObjects<T> {
   String toString() => 'Value($value)';
 
   @override
-  bool operator ==(Object o) {
-    if (identical(this, o)) return true;
-    return o is ValueObjects && o.value == value;
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ValueObjects && other.value == value;
   }
 
   @override
